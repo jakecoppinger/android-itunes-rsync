@@ -1,0 +1,15 @@
+#!/bin/bash
+set -e
+
+rm -rf playlists
+
+xml_location="/Users/Jake/test_music/iTunes Library.xml"
+
+# This must not include final slash
+music_location="/Users/Jake/Music/iTunes Media/Music/"
+
+
+java -jar iTunesExportScala-2.2.2/Itunesexport.jar -library="$xml_location" -outputDir=playlists/
+
+# file:///Users/Jake/Music/iTunes Media/Music/
+sed -i '' "s?file://$music_location??g" playlists/*.m3u
