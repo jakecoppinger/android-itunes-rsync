@@ -7,11 +7,11 @@ rm -rf playlists/
 
 # Location of your iTunes music library xml file.
 # It shouldn't touch this, but back up just to be safe!
-xml_location="~/Music/iTunes Library/iTunes Library.xml"
+xml_location=~/Music/iTunes\ Library/iTunes\ Library.xml
 
 # Location of your iTunes music media (actual music files)
 # Must include final slash
-music_location="~/Music/iTunes Media/Music/"
+music_location=~/Music/iTunes\ Media/Music/
 
 playlists_folder="playlists"
 
@@ -20,6 +20,7 @@ playlists_folder="playlists"
 music_folder="music"
 
 # Location of where to store music on your Android device
+# Must include final slash
 android_music_path="/data/data/com.arachnoid.sshelper/home/SDCard/Music/"
 
 # Generate playlists from iTunes
@@ -34,4 +35,4 @@ rsync -azv --no-perms --no-times --size-only playlists/ phone:$android_music_pat
 
 # See https://arachnoid.com/android/SSHelper/ for notes on SSHelper and
 # Android rsync quirks
-rsync -azv --no-perms --no-times --size-only $music_location phone:$android_music_path/$music_folder/ --delete
+rsync -azv --no-perms --no-times --size-only  --exclude=.DS_Store "$music_location" phone:$android_music_path$music_folder/ --delete
