@@ -1,0 +1,37 @@
+#!/bin/bash
+set -e
+
+
+# Delete old exported playlists
+rm -rf playlists/
+
+# Location of your iTunes music library xml file.
+# It shouldn't touch this, but back up just to be safe!
+xml_location="~/Music/iTunes Library/iTunes Library.xml"
+
+# Location of your iTunes music media (actual music files)
+# Must include final slash
+music_location="~/Music/iTunes Media/Music/"
+
+playlists_folder="playlists"
+
+# Folder inside the Android music folder to store music (to keep 
+# separate from playlists)
+music_folder="music"
+
+# Location of where to store music on your Android device
+android_music_path="/data/data/com.arachnoid.sshelper/home/SDCard/Music/"
+
+# Generate playlists from iTunes
+java -jar iTunesExportScala-2.2.2/Itunesexport.jar -library="$xml_location" -outputDir=playlists/
+
+# Rename paths to each song in each playlist
+sed -i '' "s?file://$music_location?../$music_folder/?g" playlists/*.m3u
+
+# See https://arachnoid.com/android/SSHelper/ for notes on SSHelper and
+# Android rsync quirks
+rsync -azv --no-perms --no-times --size-only playlists/ phone:$android_music_path/playlists/ --delete
+
+# See https://arachnoid.com/android/SSHelper/ for notes on SSHelper and
+# Android rsync quirks
+rsync -azv --no-perms --no-times --size-only $music_location phone:$android_music_path/$music_folder/ --delete
