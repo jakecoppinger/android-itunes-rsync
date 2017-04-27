@@ -35,4 +35,4 @@ rsync -azv --no-perms --no-times --size-only playlists/ phone:$android_music_pat
 
 # See https://arachnoid.com/android/SSHelper/ for notes on SSHelper and
 # Android rsync quirks
-rsync -azv --no-perms --no-times --size-only  --exclude=.DS_Store "$music_location" phone:$android_music_path$music_folder/ --delete
+rsync -azv --no-perms --no-times --size-only  --exclude=.DS_Store --progress --stats --human-readable --delete "$music_location" phone:$android_music_path$music_folder/ 
