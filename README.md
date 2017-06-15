@@ -1,34 +1,31 @@
 Android iTunes rsync
 ====================
 
->   Automatically exports m3u playlists from iTunes on your Mac, and rsyncs these and all your music to your Android phone.
-
-# Why I built this
-I love music, so I regard having an organised collection of albums and playlists on my phone important. The problems I had with current workflows are as follows:
-
-- Google Play Music: Great interface, but need fast internet and there is no option to automatically make all files offline available. Playlist syncing from iTunes buggy.
-
-- DoubleTwist: Great interface, but must sync over WiFi with my Nexus 5, and has to upload every single file every time.
-
-- [iSyncr](http://www.jrtstudio.com/iSyncr-iTunes-for-Android): This was my method of choice before this tool. The interface is average, however it was able to sync playlists and music from iTunes. However it is very, very buggy, and playlists wouldn't always sync or update
+>   Automatically export m3u playlists from iTunes on your Mac,
+>   synchronize (rsync) playlists and all your music to your Android phone
 
 # How this works
-
 - Exports m3u playlist files from iTunes using the incredible command line utility [iTunesExportScala](http://www.ericdaugherty.com/dev/itunesexport/)  by Eric Daugherty, also available on the [Mac App Store](https://itunes.apple.com/us/app/playlist-export/id434426826?mt=12&ls=1).
 
 - Renames m3u playlist paths so that they are relative (iTunes uses absolute paths)
 
-- [SSHelper](https://arachnoid.com/android/SSHelper/) allows you to SSH to an Android device without root, free n the [Play Store](https://play.google.com/store/apps/details?id=com.arachnoid.sshelper)
+- [SSHelper](https://arachnoid.com/android/SSHelper/) allows you to SSH to an Android device without root, free on the [Play Store](https://play.google.com/store/apps/details?id=com.arachnoid.sshelper)
 
 - rsyncs the playlists and music to your Android device over wifi
+
+- Notice this is **one way synchronization** and won't update your iTunes playlists/library
 
 # Getting started
 
 This is very new and probably buggy, so make sure you have a backup of your iTunes library just in case!
 
-1. Install [SSHelper](https://arachnoid.com/android/SSHelper/) ([Play Store](https://play.google.com/store/apps/details?id=com.arachnoid.sshelper)) on your Android device.
+1. Backup your iTunes Library and media!
 
-2. Add your Android device to your SSH config file with the name `phone` (if you want to use a different host name just change it in the script). Mine looks like this:
+2. Install [SSHelper](https://arachnoid.com/android/SSHelper/) ([Play Store](https://play.google.com/store/apps/details?id=com.arachnoid.sshelper)) on your Android device.
+
+3. Follow the [SSHelper setup](https://arachnoid.com/android/SSHelper/#The_basics) setup, make sure to setup **Public-key (passwordless) logins** and copy the public key to your Mac.
+
+4. Add your Android device to your SSH config file with the name `phone` (if you want to use a different host name just change it in the script). Mine looks like this:
 
 ```
 Host phone 
@@ -37,17 +34,28 @@ Port 2222
 User root
 ```
 
-3. Test your ssh connection. Open SSHelper on your phone, and run `ssh phone` on your Mac.
+5. Test your ssh connection. Open SSHelper on your phone, and run `ssh phone` on your Mac. Isn't SSH great!
 
-3. Look in the script and make sure the paths at the top are correct for your Mac.
+6. Look in the script and make sure the paths are correct for your mac.
 
-4. Check your phone has enough free space, and run `./upload-music`
+7. Check your phone has enough free space, and run `./upload-music`
 
 # Notes on music players
 Android m3u playlist support seems to be really buggy. Very few apps ever seem to refresh correctly to see the new files and playlists. [Poweramp](http://powerampapp.com/) ([2 week trial](https://market.android.com/details?id=com.maxmpz.audioplayer) or [full version](https://play.google.com/store/apps/details?id=com.maxmpz.audioplayer.unlock) seemed to be the only apps that can reload instantly and never fail to refresh.
 
 # Notes on album art
 Syncing album art would be another complication, so I used [Doug's Re-Embed Artwork AppleScript](http://dougscripts.com/itunes/scripts/ss.php?sp=reembedartwork) to make sure the album artwork was embedded in the music files themselves.
+
+The script should notice the files have changed size and re-synchronize them.
+
+# Why I built this
+I love music, so I regard having an organised collection of albums and playlists on my phone important. The problems I had with current workflows are as follows:
+
+- Google Play Music: Great interface, but need fast internet and there is no option to automatically make all files offline available. Playlist syncing from iTunes buggy.
+
+- [DoubleTwist](https://www.doubletwist.com/): Great interface, but must sync over WiFi with my Nexus 5, and has to upload every single file every time.
+
+- [iSyncr](http://www.jrtstudio.com/iSyncr-iTunes-for-Android): This was my method of choice before this tool. The interface is average, however it was able to sync playlists and music from iTunes. However it is very, very buggy, and playlists wouldn't always sync or update
 
 # License
 
