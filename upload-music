@@ -1,9 +1,5 @@
-#!/bin/bash
+#!/usr/bin/env bash
 set -e
-
-
-# Delete old exported playlists
-rm -rf playlists/
 
 # Location of your iTunes music library xml file.
 # It shouldn't touch this, but back up just to be safe!
@@ -23,16 +19,39 @@ music_folder="music"
 # Must include final slash
 android_music_path="/data/data/com.arachnoid.sshelper/home/SDCard/Music/"
 
+
+############################
+
+echo "android-itunes-rsync, Jake Coppinger 2017"
+echo "https://github.com/jakecoppinger/android-itunes-rsync"
+echo ""
+
 # Generate playlists from iTunes
+echo "Generating playlists from iTunes..."
 java -jar iTunesExportScala-2.2.2/Itunesexport.jar -library="$xml_location" -outputDir=playlists/
 
-# Rename paths to each song in each playlist
+# Rename paths in M3U playlist files to be relative
+echo ""
+echo "Generating playlists to be relative..."
 sed -i '' "s?file://$music_location?../$music_folder/?g" playlists/*.m3u
 
 # See https://arachnoid.com/android/SSHelper/ for notes on SSHelper and
 # Android rsync quirks
+
+# Sync playlists, delete old
+echo ""
+echo "Syncing playlists..."
 rsync -azv --no-perms --no-times --size-only playlists/ phone:$android_music_path/playlists/ --delete
 
-# See https://arachnoid.com/android/SSHelper/ for notes on SSHelper and
-# Android rsync quirks
-rsync -azv --no-perms --no-times --size-only  --exclude=.DS_Store --progress --stats --human-readable --delete "$music_location" phone:$android_music_path$music_folder/ 
+# Sync music, delete old
+echo ""
+echo "Syncing music..."
+rsync -azv --no-perms --no-times --size-only  --exclude=.DS_Store --progress --stats --human-readable --delete "$music_location" phone:$android_music_path$music_folder/
+
+# Delete exported playlists
+echo ""
+echo "Deleting exported playlists..."
+rm -rf playlists/
+
+echo ""
+echo "Done!"
