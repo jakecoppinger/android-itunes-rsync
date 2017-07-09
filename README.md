@@ -23,18 +23,30 @@ This is very new and probably buggy, so make sure you have a backup of your iTun
 
 2. Install [SSHelper](https://arachnoid.com/android/SSHelper/) ([Play Store](https://play.google.com/store/apps/details?id=com.arachnoid.sshelper)) on your Android device.
 
-3. Follow the [SSHelper setup](https://arachnoid.com/android/SSHelper/#The_basics) setup, make sure to setup **Public-key (passwordless) logins** and copy the public key to your Mac.
+3. Follow the [SSHelper setup](https://arachnoid.com/android/SSHelper/#The_basics).
+Copy your Mac's public key to your phone:
 
-4. Add your Android device to your SSH config file with the name `phone` (if you want to use a different host name just change it in the script). Mine looks like this:
+```
+ssh-copy-id -i ~/.ssh/id_rsa.pub -p 2222 root@ADDRESS
+```
+
+**Note:** You should be able to use a alphabetical hostname. Go to `Settings/About phone` and see the `Device Model` label - your hostname will be `modelname.local`, where spaces are replaced with underscores. Make sure you can reach your phone with a `ping`. Mine is Nexus_5.local
+
+
+*Make sure to to tick the `Disable password logins` box, as the default password is `admin`*
+
+
+4. Add your Android device to your SSH config file (if you want to use a different Host shortcut just change it in the script).
+Mine looks like this:
 
 ```
 Host phone 
-Hostname 192.168.0.3
+Hostname Nexus_5.local
 Port 2222
 User root
 ```
 
-5. Test your ssh connection. Open SSHelper on your phone, and run `ssh phone` on your Mac. Isn't SSH great!
+5. Test your SSH config. Open SSHelper on your phone, and run `ssh phone` on your Mac. Isn't SSH great!
 
 6. Look in the script and make sure the paths are correct for your mac.
 
