@@ -53,7 +53,7 @@ User root
 7. Check your phone has enough free space, and run `./upload-music`
 
 # Notes on music players
-Android m3u playlist support seems to be really buggy. Very few apps ever seem to refresh correctly to see the new files and playlists. [Poweramp](http://powerampapp.com/) ([2 week trial](https://market.android.com/details?id=com.maxmpz.audioplayer) or [full version](https://play.google.com/store/apps/details?id=com.maxmpz.audioplayer.unlock) seemed to be the only apps that can reload instantly and never fail to refresh.
+Android m3u playlist support seems to be really buggy. Very few apps ever seem to refresh correctly to see the new files and playlists. [Poweramp](http://powerampapp.com/) ([2 week trial](https://market.android.com/details?id=com.maxmpz.audioplayer) or [full version](https://play.google.com/store/apps/details?id=com.maxmpz.audioplayer.unlock) and [MortPlayer](https://play.google.com/store/apps/details?id=de.stohelit.folderplayer) seemed to be the only apps that can reload the new playlists. Sometimes Poweramp likes a manual refresh in it's settings.
 
 # Notes on album art
 Syncing album art would be another complication, so I used [Doug's Re-Embed Artwork AppleScript](http://dougscripts.com/itunes/scripts/ss.php?sp=reembedartwork) to make sure the album artwork was embedded in the music files themselves.
