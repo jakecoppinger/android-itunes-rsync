@@ -17,7 +17,7 @@ music_folder="music"
 
 # Location of where to store music on your Android device
 # Must include final slash
-android_music_path="/data/data/com.arachnoid.sshelper/home/SDCard/Music/"
+android_music_path="/storage/5412-598B/Android/data/com.arachnoid.sshelper/Music/"
 
 
 ############################
