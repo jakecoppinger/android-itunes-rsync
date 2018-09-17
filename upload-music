@@ -41,12 +41,12 @@ sed -i '' "s?file://$music_location?../$music_folder/?g" playlists/*.m3u
 # Sync playlists, delete old
 echo ""
 echo "Syncing playlists..."
-rsync -azv --no-perms --no-times --size-only playlists/ phone:$android_music_path/playlists/ --delete
+rsync -av -zz --no-perms --no-times --size-only playlists/ phone:$android_music_path/playlists/ --delete
 
 # Sync music, delete old
 echo ""
 echo "Syncing music..."
-rsync -azv --no-perms --no-times --size-only  --exclude=.DS_Store --progress --stats --human-readable --delete "$music_location" phone:$android_music_path$music_folder/
+rsync -av -zz --no-perms --no-times --size-only  --exclude=.DS_Store --progress --stats --human-readable --delete "$music_location" phone:$android_music_path$music_folder/
 
 # Delete exported playlists
 echo ""
