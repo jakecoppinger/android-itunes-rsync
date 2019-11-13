@@ -9,20 +9,25 @@ xml_location=~/Music/iTunes\ Library/iTunes\ Library.xml
 # Must include final slash
 music_location=~/Music/iTunes\ Media/Music/
 
+# Location of where to store music on your Android device.
+# Must include final slash.
+# Make sure to run `pwd` in termux to get this - it's not the real
+# SD card path!
+android_music_path="/data/data/com.termux/files/home/storage/external-1/itunes/"
+
+
+
+# Folder inside the $android_music_path folder to store music files
+# (to keep separate from playlists).
+music_folder="media"
+
+# Folder inside the $android_music_path folder to store playlists.
 playlists_folder="playlists"
-
-# Folder inside the Android music folder to store music (to keep 
-# separate from playlists)
-music_folder="music"
-
-# Location of where to store music on your Android device
-# Must include final slash
-android_music_path="/storage/5412-598B/Android/data/com.arachnoid.sshelper/Music/"
 
 
 ############################
 
-echo "android-itunes-rsync, Jake Coppinger 2017"
+echo "android-itunes-rsync, Jake Coppinger 2019"
 echo "https://github.com/jakecoppinger/android-itunes-rsync"
 echo ""
 
@@ -35,20 +40,22 @@ echo ""
 echo "Generating playlists to be relative..."
 sed -i '' "s?file://$music_location?../$music_folder/?g" playlists/*.m3u
 
-# See https://arachnoid.com/android/SSHelper/ for notes on SSHelper and
-# Android rsync quirks
+# If using SSHelper, see https://arachnoid.com/android/SSHelper/ for notes on rsync quirks.
+# Termux should allow all options.
 
-# Sync playlists, delete old
+# Be careful of the character sets - hence the iconv option.
+
+# Sync playlists, delete old on remote.
 echo ""
 echo "Syncing playlists..."
-rsync -av -zz --no-perms --no-times --size-only playlists/ phone:$android_music_path/playlists/ --delete
+rsync --human-readable -a --no-perms --size-only --partial  --info=progress2 --exclude=.DS_Store --iconv=utf-8-mac,utf-8 --delete  playlists/ phone:$android_music_path$playlists_folder
 
-# Sync music, delete old
+# Sync music, delete old on remote.
 echo ""
 echo "Syncing music..."
-rsync -av -zz --no-perms --no-times --size-only  --exclude=.DS_Store --progress --stats --human-readable --delete "$music_location" phone:$android_music_path$music_folder/
+rsync  --human-readable -a --no-perms --size-only --partial  --info=progress2 --exclude=.DS_Store --iconv=utf-8-mac,utf-8 --delete "$music_location" phone:$android_music_path$music_folder/
 
-# Delete exported playlists
+# Delete temp exported playlists.
 echo ""
 echo "Deleting exported playlists..."
 rm -rf playlists/
